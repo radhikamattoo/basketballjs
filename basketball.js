@@ -17,40 +17,55 @@ var state = responseObj.state;
 var next = responseObj.next;
 var players = responseObj.players;
 
-//TODO: must use forEach, filter, map and reduce
+//TODO: must use filter, map
 
 //Game ID
 console.log("Game ID: " + id + "\n=====");
 
-//Final Score
-var pacersScore = 0;
-var hawksScore = 0;
-for(var i = 0; i < players.length; i++){
-  var player = players[i];
+//Final Score - USE REDUCE
+var pacersScore = players.reduce(function(total, player){
+
   var threePointers = Number(player.three_pointers_made);
   var onePointers = Number(player.free_throws_made);
   var twoPointers = Number(player.field_goals_made) - threePointers;
 
   var playerScore = 3*threePointers + 2*twoPointers + onePointers;
-
   if(player.team_name === 'Pacers'){
-    pacersScore += playerScore;
-  }else{
-    hawksScore += playerScore;
-  }
-}
-console.log("Pacers " + pacersScore);
-console.log("Hawks " + hawksScore);
+      return playerScore + total;
+  }else return total;
+}, 0);
 
-//Player with Most Rebounds
+var hawksScore = players.reduce(function(total, player){
+
+  var threePointers = Number(player.three_pointers_made);
+  var onePointers = Number(player.free_throws_made);
+  var twoPointers = Number(player.field_goals_made) - threePointers;
+
+  var playerScore = 3*threePointers + 2*twoPointers + onePointers;
+  if(player.team_name === 'Hawks'){
+      return playerScore + total;
+  }else return total;
+}, 0);
+
+console.log("Pacers "+ pacersScore);
+console.log("Hawks "+ hawksScore);
+
+
+//Player with Most Rebounds - USE FOREACH
 var reboundAmount = Number.NEGATIVE_INFINITY;
 var reboundPlayer = null;
-for(var i = 0; i < players.length; i++){
-  var player = players[i];
-  var sum = Number(player.rebounds_offensive) + Number(player.rebounds_defensive);
-  if(sum > reboundAmount){
-      reboundAmount = sum;
-      reboundPlayer = player.first_name + " " + player.last_name;
+players.forEach(function(player){
+  var defensive = Number(player.rebounds_defensive);
+  var offensive = Number(player.rebounds_offensive);
+  var total = defensive + offensive;
+  if(total  > reboundAmount){
+    reboundAmount = total;
+    reboundPlayer = player.first_name + " " + player.last_name;
   }
-}
+});
 console.log(" * Most rebounds: " + reboundPlayer + " with " + reboundAmount);
+
+
+//Guard (G) With Highest Three Pointer Percentage USE FILTER
+
+//Total Number of Players With at Least One Assist USE FILTER
