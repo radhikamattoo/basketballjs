@@ -6,10 +6,16 @@ Homework 2
 */
 
 var request = require('request');
-var theURL = 'http://foureyes.github.io/csci-ua.0480-spring2016-010/homework/02/0021500750.json'
+var theURL = 'http://foureyes.github.io/csci-ua.0480-spring2016-010/homework/02/0021500750.json';
+
+//first call
+getGames(theURL);
 
 function getGames(theURL){
-  if(theURL == "") return;
+  //base case
+  if(theURL == "")return;
+
+  //recursive case
   request(theURL, function(error, response, body){
     if (!error && response.statusCode == 200) {
         //this object has: id, date, arena, city, state, next, and players properties
@@ -36,7 +42,7 @@ function getGames(theURL){
         //-----------------------------------------------------------------------------
         console.log("Game ID: " + id + "\n=====");
         //-----------------------------------------------------------------------------
-        //Final Score - USE REDUCE
+        //Final Score
         //-----------------------------------------------------------------------------
         var teamOneScore = players.reduce(function(total, player){
           if(player.team_name === teamOne){
@@ -68,7 +74,7 @@ function getGames(theURL){
         console.log(teamTwo + " "+ teamTwoScore);
 
         //-----------------------------------------------------------------------------
-        //Player with Most Rebounds - USE FOREACH
+        //Player with Most Rebounds
         //-----------------------------------------------------------------------------
         var reboundAmount = Number.NEGATIVE_INFINITY;
         var reboundPlayer = null;
@@ -164,4 +170,3 @@ function getGames(theURL){
      }
   })
 }
-getGames(theURL);
